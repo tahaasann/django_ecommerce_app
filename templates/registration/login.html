@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {#############}
+{% block content %}
+<div class="auth-form-container">
+    <h1>Login</h1>
+
+    {% if form.errors %} {# Genel hata mesajı yerine form.on_field_errors daha
+    iyi olabilir #}
+    <p style="color: #dc3545; font-weight: bold">
+        Kullanıcı adı veya şifre hatalı. Lütfen tekrar deneyin.
+    </p>
+    {% endif %} {% if form.non_field_errors %}
+    <ul class="errorlist nonfield">
+        {# Özel stil gerekebilir #} {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %} {{ form.as_p }} {# as_p genellikle bu tür formlar için
+        yeterlidir #} {# Submit butonunu form.as_p'nin
+        <p>
+            'sinden çıkarıp direkt eklemek daha iyi kontrol sağlar #}
+            <button type="submit" class="button">Login</button>
+
+            {# Gizli 'next' alanı formun içinde kalmalı #}
+            <input
+                type="hidden"
+                name="next"
+                value="{{ request.GET.next|default:'/' }}"
+            />
+            {# default eklendi #}
+        </p>
+    </form>
+
+    <div class="extra-links">
+        {# Şifre sıfırlama linki için sarmalayıcı #}
+        <p><a href="{% url 'password_reset' %}">Şifrenizi mi unuttunuz?</a></p>
+        {# Kayıt linki de eklenebilir #} {#
+        <p>
+            Hesabınız yok mu?
+            <a href="{% url 'accounts:signup' %}">Kayıt Olun</a>
+        </p>
+        #}
+    </div>
+</div>
+{% endblock %}

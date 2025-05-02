@@ -1,0 +1,80 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+*.so
+
+# Virtual Environment
+venv/
+env/
+.env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Secrets (KESİNLİKLE GITHUB'A GÖNDERMEYİN!)
+.env
+*.env.*
+secrets.yaml
+secrets.json
+# settings_local.py veya benzeri özel ayar dosyaları varsa ekleyin
+
+# Django
+*.log
+#db.sqlite3
+db.sqlite3-journal
+local_settings.py
+# settings.py içinde SECRET_KEY gibi hassas veriler varsa ve ayrı bir
+# dosyadan okumuyorsanız, settings.py'ı da buraya eklemeyi DÜŞÜNMELİSİNİZ
+# ancak bu, kurulumu zorlaştırabilir. En iyisi hassas verileri ortam
+# değişkenlerinden veya .env dosyasından okumaktır.
+
+# Media Files (Kullanıcı tarafından yüklenen dosyalar)
+#media/
+
+# Static files (collectstatic ile toplananlar)
+staticfiles/
+static_root/
+# Not: Projenizdeki ana 'static/' klasörünü buraya EKLEMEYİN,
+# çünkü CSS/JS kaynaklarınız orada ve repo'da olmalı.
+
+# IDE / Editor / OS files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+
+# Build artifacts
+dist/
+build/
+*.egg
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
+
+# Sass/Less cache
+.sass-cache/
+.less-cache/
+
+# Log files
+logs/
+*.log.*
+
+# Windows thumbnail cache files
+ehthumbs.db
+ehthumbs_vista.db

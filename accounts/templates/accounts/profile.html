@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}User Profile | {{ user.username }} {%endblock %} {######}
+{% block content %} {# Sarmalayıcı eklendi #}
+<div class="profile-container">
+  <h1>Profil</h1>
+  <p>Hoş geldin, {{ user.username }}!</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  {# Başka profil bilgileri eklenebilir, örn: sipariş geçmişi linki #}{##########################}
+  {# <a href="#" class="button light mt-3">Siparişlerim</a> #} {#################################}
+  {# <a href="{% url 'password_change' %}" class="button light mt-3">Şifre Değiştir</a> #}
+</div>
+{% endblock %}

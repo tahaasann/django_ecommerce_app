@@ -1,0 +1,8 @@
+{% extends "base.html" %} {% block title %}Logged out{% endblock %} {% block
+content %} {# İçeriği ortalamak veya stil vermek için bir sarmalayıcı #}
+<div class="logged-out-container text-center" style="margin-top: 40px">
+    <h1>Başarıyla Çıkış Yaptınız</h1>
+    <p>Tekrar giriş yapabilirsiniz.</p>
+    <a href="{% url 'login' %}" class="button">Login</a>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Shopping Cart{% endblock %}
+
+{% block content %}
+{# Ana sarmalayıcı eklendi #}
+<div class="cart-page-container">
+    <h1>Alışveriş Sepetiniz</h1>
+
+    {% if cart %} {# Sepet boş değilse tabloyu göster #}
+        <table class="cart">
+            <thead>
+                <tr>
+                    {# Görsel sütununu daraltabiliriz #}
+                    <th style="width: 100px;">Görsel</th>
+                    <th>Ürün</th>
+                    <th style="width: 150px;">Adet</th> {# Adet sütunu genişliği #}
+                    <th style="width: 100px;">Kaldır</th>{# Kaldır sütunu genişliği #}
+                    <th>Birim Fiyat</th>
+                    <th>Toplam Fiyat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <tr>
+                            <td data-label="Görsel"> {# Mobil için data-label eklendi #}
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}">
+                                </a>
+                            </td>
+                            {# Mobil için data-label eklendi #}
+                            <td data-label="Ürün"><a href="{{ product.get_absolute_url }}" class="product-name-cart">{{ product.name }}</a></td>
+                            <td data-label="Adet">
+                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    {# Formu manuel render etmek CSS kontrolü için daha iyi olabilir #}
+                                    {{ item.update_quantity_form.quantity }}
+                                    {{ item.update_quantity_form.override }}
+                                    <button type="submit" class="button small-button">Güncelle</button> {# Buton elementi ve class #}
+                                </form>
+                            </td>
+                            <td data-label="Kaldır">
+                                <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    {# Buton elementi ve özel silme class'ı #}
+                                    <button type="submit" class="button small-button delete-button" title="Ürünü Kaldır">
+                                         <i class="fas fa-trash-alt"></i> {# İkon ekleyelim #}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="num" data-label="Birim Fiyat">${{ item.price }}</td>
+                            <td class="num" data-label="Toplam Fiyat">${{ item.total_price }}</td>
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                {# Toplam satırı thead/tbody dışında veya tfoot içinde olabilir #}
+                 <tr class="total">
+                    <td colspan="5">Toplam</td> {# Colspan doğru #}
+                    <td class="num">${{ cart.get_total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {# Butonlar için sarmalayıcı doğru #}
+        <div class="cart-actions">
+            <a href="{% url "products:product_list" %}" class="button light">Alışverişe Devam Et</a>
+            <a href="#" class="button">Ödemeye Geç</a> {# Checkout butonu #}
+        </div>
+
+    {% else %} {# Sepet boşsa mesaj göster #}
+        <p>Alışveriş sepetiniz şu anda boş.</p>
+        <p><a href="{% url "products:product_list" %}" class="button">Alışverişe Başla</a></p>
+    {% endif %}
+
+</div> {# .cart-page-container kapanışı #}
+{% endblock %}

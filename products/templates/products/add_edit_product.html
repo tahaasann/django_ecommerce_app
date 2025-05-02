@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}{{ page_title }}{% endblock %} {###}
+{% block content %}
+<div class="product-form-container">
+    {# Doğru sarmalayıcı class #}
+    <h1>{{ page_title }}</h1>
+
+    {# Hata mesajı bölümü CSS class'ları ile daha uyumlu hale getirildi #}{###}
+    {% if form.non_field_errors %}
+    <div class="messages">
+        {# messages class'ını kullanalım #}
+        <ul class="errorlist nonfield error">
+            {# error class'ı da ekleyelim #} {#################################}
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %} {% if form.errors %}
+    <div class="messages">
+        <ul class="error">
+            {% for field in form %} {% for error in field.errors %}
+            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %} {% endfor %}
+        </ul>
+    </div>
+    {% endif %} {# enctype doğru #}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} {{ form.as_p }}
+        <div
+            class="form-actions"
+            style="
+                margin-top: 20px;
+                border-top: 1px solid #eee;
+                padding-top: 15px;
+            "
+        >
+            {# Butonları gruplayalım #}
+            <button type="submit" class="button">Kaydet</button>
+            {% if product %}
+            <a href="{{ product.get_absolute_url }}" class="button light"
+                >İptal / Geri Dön</a
+            >
+            {% else %}
+            <a href="{% url 'products:product_list' %}" class="button light"
+                >İptal</a
+            >
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

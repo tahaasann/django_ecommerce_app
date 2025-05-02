@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Sign up{% endblock %} {% block
+content %}
+<div class="auth-form-container">
+    <h1>Kayıt Ol</h1>
+    <p>Lütfen aşağıdaki formu kullanarak kayıt olun:</p>
+
+    {% if form.errors %}
+    <div class="messages">
+        <ul class="error">
+            {% for field in form %} {% for error in field.errors %}
+            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %} {{ form.as_p }} {# Submit butonunu form.as_p'den
+        çıkarıp class ekleyelim #}
+        <button type="submit" class="button">Hesabımı Oluştur</button>
+    </form>
+
+    <div class="extra-links">
+        <p>
+            Zaten bir hesabınız var mı?
+            <a href="{% url 'login' %}">Giriş Yapın</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

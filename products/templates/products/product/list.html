@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="product-list-container"> {# Ana sarmalayıcı doğru #}
+        <div id="sidebar">
+            <h3>Categories</h3>
+            <ul>
+                <li {% if not category %}class="selected"{% endif %}>
+                    <a href="{% url "products:product_list" %}">All</a>
+                </li>
+                {% for c in categories %}
+                    <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                        {# get_absolute_url kullanmak daha iyi #}
+                        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="main" class="product-list"> {# main ve product-list class'ları aynı elemanda #}
+            <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+
+            {# Ürün kartı yapısı güncellendi #}
+            {% for product in products %}
+            <div class="item"> {# Ürün Kartı #}
+                <a href="{{ product.get_absolute_url }}" class="product-image-link"> {# Resim linki #}
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" />
+                </a>
+                <div class="product-info"> {# Bilgi ve buton alanı #}
+                    <a href="{{ product.get_absolute_url }}" class="product-name"> {# İsim (link) #}
+                        {{ product.name }}
+                    </a>
+                    <span class="product-price">${{ product.price}}</span> {# Fiyat #}
+
+                    {# Sepete Ekle Formu #}
+                    <form action="{% url "cart:cart_add" product.id %}" method="post" class="add-to-cart-form-list">
+                        {% csrf_token %}
+                        <button type="submit" class="button small-button">
+                            <i class="fas fa-cart-plus"></i> Sepete Ekle
+                        </button>
+                    </form>
+                </div> {# .product-info kapanışı #}
+            </div> {# .item kapanışı #}
+            {% empty %} {# Ürün yoksa gösterilecek mesaj #}
+                <p>Bu kategoride henüz ürün bulunmamaktadır.</p>
+            {% endfor %}
+        </div> {# #main kapanışı #}
+    </div> {# .product-list-container kapanışı #}
+
+{% endblock %}

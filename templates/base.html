@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}My Shop{% endblock %}</title> {# Başlıkta gereksiz boşluk kaldırıldı #}
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    </head>
+    <body>
+        <div id="header">
+            {# Header içeriğini de container içine almak genellikle daha iyi hizalama sağlar #}
+            <div class="container">
+                <a href="/" class="logo">My Shop</a>
+                {# Header'ın sağına başka öğeler eklemek isterseniz burası uygun olabilir #}
+            </div>
+        </div>
+
+        <div id="subheader">
+            <div class="container">
+                {# .subheader-right div'i doğru yerde #}
+                <div class="subheader-right">
+                    <div class="cart">
+                        <a href="{% url "cart:cart_detail" %}" class="cart-icon-link" title="Shopping Cart"> {# title eklendi #}
+                            <i class="fas fa-shopping-cart"></i>
+                            {% with total_items=cart|length %}
+                                {% if total_items > 0 %}
+                                    <span class="cart-badge">{{ total_items }}</span>
+                                {% endif %}
+                            {% endwith %}
+                        </a>
+                    </div>
+                    <div class="user-nav">
+                        {% if user.is_authenticated %}
+                            <span>Merhaba, {{ user.username }}!</span> {# Span doğru yerde #}
+                            <a href="{% url 'accounts:profile' %}">Profil</a>
+                            <a href="{% url 'products:add_product' %}">Ürün Ekle</a>
+                            {# Logout için form yerine basit link kullanmak daha yaygın ve CSS ile buton gibi gösterilebilir #}
+                            {# Eğer CSRF zorunluysa (genelde GET olmamalı) küçük bir form kalabilir #}
+                            <form action="{% url 'logout' %}" method="post" style="display: inline; margin: 0; padding: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-button">Çıkış Yap</button> {# Özel class verdik #}
+                            </form>
+                        {% else %}
+                            <a href="{% url 'login' %}">Giriş Yap</a> | {# Pipe mobil için sorun olabilir, CSS ile gizlenebilir #}
+                            <a href="{% url 'accounts:signup' %}">Kayıt Ol</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Ana İçerik Alanı #}
+        <div id="content"> {# ID 'content' kalsın #}
+            <div class="container"> {# İçeriği sarmalayan container #}
+                {# === MESAJ ALANI === #}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {# === MESAJ ALANI SONU === #}
+
+                {% block content %}
+                {# Buraya diğer şablonların içeriği gelecek #}
+                {% endblock %}
+            </div> {# .container kapanışı #}
+        </div> {# #content kapanışı #}
+
+        {# Footer alanı eklenebilir #}
+        {# <footer id="footer"> #}
+        {#     <div class="container"> #}
+        {#         <p>© {% now "Y" %} My Shop. Tüm Hakları Saklıdır.</p> #}
+        {#     </div> #}
+        {# </footer> #}
+
+        {# JavaScript dosyaları genellikle body kapanışından önce eklenir #}
+        {# <script src="{% static 'js/main.js' %}"></script> #}
+    </body>
+</html>

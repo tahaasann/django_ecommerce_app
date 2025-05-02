@@ -104,35 +104,90 @@ Projeyi local makinenizde çalıştırmak için aşağıdaki adımları izleyin:
 *   Giriş yaptıktan sonra "Ürün Ekle" linki ile yeni ürünler ekleyebilirsiniz.
 *   Kendi eklediğiniz ürünlerin detay sayfasında "Düzenle" ve "Sil" butonları görünecektir.
 
-## 🏗️ Proje Yapısı (Kısaca)
-├── manage.py
-├── my_shop/ # Proje ayarları ve ana URL'ler
-│ ├── settings.py
-│ ├── urls.py
-│ └── ...
-├── products/ # Ürünler ve kategoriler uygulaması
-│ ├── models.py
-│ ├── views.py
-│ ├── urls.py
-│ └── templates/
-├── accounts/ # Kullanıcı hesapları uygulaması
-│ ├── views.py
-│ ├── urls.py
-│ └── templates/
-├── cart/ # Alışveriş sepeti uygulaması
-│ ├── cart.py
-│ ├── views.py
-│ ├── urls.py
-│ └── templates/
-├── templates/ # Proje geneli şablonlar (base.html, registration/)
-├── static/ # Proje geneli statik dosyalar (CSS, JS, img)
-├── media/ # Kullanıcı tarafından yüklenen medya dosyaları (gitignore'da)
-├── venv/ # Sanal ortam (gitignore'da)
-├── db.sqlite3 # SQLite veritabanı (gitignore'da)
-├── requirements.txt # Gerekli Python kütüphaneleri
-├── .gitignore # Git tarafından takip edilmeyecek dosyalar
-└── README.md # Bu dosya
+## 🏗️ Proje Yapısı
 
+```plaintext
+my_shop_project/
+├── .git/                     # Git sürüm kontrolü (genellikle gizli)
+├── .gitignore                # Git'in yok sayacağı dosyalar
+├── README.md                 # Bu dosya
+├── requirements.txt          # Gerekli Python kütüphaneleri
+├── manage.py                 # Django yönetim komutları
+├── venv/                     # Sanal ortam (gitignore'da)
+├── db.sqlite3                # Veritabanı dosyası (gitignore'da)
+│
+├── my_shop/                  # Django Proje Konfigürasyon Dizini
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py           # Proje Ayarları
+│   ├── urls.py               # Ana URL Yönlendirmeleri
+│   └── wsgi.py
+│
+├── products/                 # Ürünler Uygulaması (App)
+│   ├── __init__.py
+│   ├── admin.py              # Admin paneli kayıtları
+│   ├── apps.py
+│   ├── forms.py              # Ürün ekleme/düzenleme formu
+│   ├── migrations/           # Veritabanı geçişleri
+│   │   └── ...
+│   ├── models.py             # Category, Product modelleri
+│   ├── templates/            # Uygulamaya özel şablonlar
+│   │   └── products/
+│   │       ├── add_edit_product.html
+│   │       └── product/
+│   │           ├── detail.html
+│   │           └── list.html
+│   ├── urls.py               # Uygulama URL yönlendirmeleri
+│   └── views.py              # Uygulama view fonksiyonları
+│
+├── accounts/                 # Kullanıcı Hesapları Uygulaması (App)
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations/
+│   │   └── ...
+│   ├── models.py             # (Şu an için boş olabilir)
+│   ├── templates/
+│   │   └── accounts/
+│   │       ├── profile.html
+│   │       └── signup.html
+│   ├── urls.py
+│   └── views.py
+│
+├── cart/                     # Alışveriş Sepeti Uygulaması (App)
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── cart.py               # Sepet mantığı sınıfı
+│   ├── context_processors.py # Sepeti global yapma
+│   ├── forms.py              # Sepete ekleme formu
+│   ├── migrations/
+│   │   └── ...
+│   ├── models.py             # (Şu an için boş olabilir)
+│   ├── templates/
+│   │   └── cart/
+│   │       └── detail.html
+│   ├── urls.py
+│   └── views.py
+│
+├── templates/                # Proje Geneli Şablonlar
+│   ├── base.html             # Ana şablon
+│   └── registration/         # Django Auth şablonları
+│       ├── login.html
+│       ├── logged_out.html
+│       └── ... (password_reset vb.)
+│
+├── static/                   # Proje Geneli Statik Dosyalar (CSS, JS, Resimler)
+│   ├── css/
+│   │   └── base.css
+│   ├── img/
+│   │   └── no_image.png
+│   └── js/
+│       └── (varsa .js dosyaları)
+│
+└── media/                    # Kullanıcı Tarafından Yüklenen Medya (gitignore'da)
+    └── products/             # Ürün resimlerinin yüklendiği yer
+        └── ...
 
 
 ## 🔮 Gelecek İyileştirmeler (Fikirler)
